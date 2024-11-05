@@ -15,21 +15,6 @@ export default function WelcomeView(props: WelcomeViewProps) {
     }
   }
 
-  async function onToggleCamera() {
-    if (camera.permissionStatus !== "Allowed") {
-      console.warn("Tentou ativar/desativar a câmera sem permissões necessárias.");
-      return;
-    }
-
-    if (!camera.isActive) {
-      const result = await camera.start();
-      console.log("Result:", result);
-    } else {
-      const result = await camera.stop();
-      console.log("Result:", result);
-    }
-  }
-
   useEffect(() => {
     if (camera.permissionStatus === "Allowed") {
       props.goToScanner();
@@ -55,14 +40,14 @@ export default function WelcomeView(props: WelcomeViewProps) {
         </span>
       </p>
       {camera.permissionStatus === "Denied" && (
-        <p class="text-error-on-light font-bold">
+        <p class="font-bold text-error-on-light">
           A permissão de câmera foi negada. É preciso conceder a permissão através das configurações
           do aplicativo no sistema.
         </p>
       )}
       <div class="flex flex-col items-stretch gap-2">
         <button
-          class="shadow-pixel-sm rounded-md border-2 border-white-800 bg-white-100 px-4 py-2 font-bold active:translate-x-[2px] active:translate-y-[2px] active:bg-white-200 active:shadow-none"
+          class="rounded-md border-2 border-white-800 bg-white-100 px-4 py-2 font-bold shadow-pixel-sm active:translate-x-[2px] active:translate-y-[2px] active:bg-white-200 active:shadow-none"
           onClick={onRequestPermissionsButton}>
           Conceder permissões
         </button>

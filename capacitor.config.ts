@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "com.lucasbortoli.prototipo_camera",
-  appName: "Protótipo Câmera",
+  appId: "com.lucasbortoli.comercial",
+  appName: "Vendoista",
   webDir: "dist",
   // Usar essa configuração durante desenvolvimento + HMR
   server: {

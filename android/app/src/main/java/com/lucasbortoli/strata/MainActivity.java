@@ -1,4 +1,4 @@
-package com.lucasbortoli.prototipo_camera;
+package com.lucasbortoli.comercial;
 
 import com.getcapacitor.BridgeActivity;
 
