@@ -15,12 +15,20 @@ interface Route<P> {
   kind: "screen" | "popup";
   props: P;
   state: "entering" | "normal" | "leaving";
+  systemBackButtonEnabled: boolean;
   component: (props: P) => JSX.Element;
 }
 
 interface CompassContext {
   routeStack: Route<any>[];
-  push<P>(component: (props: P) => JSX.Element, props: P, kind?: Route<P>["kind"]): void;
+  push<P>(
+    component: (props: P) => JSX.Element,
+    props: P,
+    options?: {
+      kind?: Route<P>["kind"];
+      systemBackButtonEnabled?: boolean;
+    }
+  ): void;
   pop(): void;
 }
 
@@ -35,10 +43,11 @@ export function CompassProvider(props: { children: ComponentChildren }) {
 
   const compass: CompassContext = {
     routeStack,
-    push: (component, props, kind) => {
+    push: (component, props, options) => {
       const route = {
         key: makeRouteKey(),
-        kind: kind ?? "screen",
+        kind: options?.kind ?? "screen",
+        systemBackButtonEnabled: options?.systemBackButtonEnabled ?? true,
         component,
         props,
         state: "entering",
@@ -77,6 +86,10 @@ export function CompassProvider(props: { children: ComponentChildren }) {
   }
 
   useBackButton(() => {
+    if (routeStack.at(-1)?.systemBackButtonEnabled === false) {
+      return;
+    }
+
     requestAnimationFrame(() => compass.pop());
   });
 

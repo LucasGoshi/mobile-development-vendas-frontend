@@ -7,7 +7,7 @@
 }
 
 .routeWhenEntering.kindPopup {
-  animation: AnimationRoutePopupEnter 250ms ease-in-out;
+  animation: AnimationRoutePopupEnter 100ms ease-in-out;
   pointer-events: none;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .routeWhenLeaving.kindPopup {
-  animation: AnimationRoutePopupLeave 250ms ease-in-out;
+  animation: AnimationRoutePopupLeave 100ms ease-in-out;
   pointer-events: none;
 }
 
