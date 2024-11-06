@@ -1,20 +1,30 @@
 .route {
 }
 
-.routeWhenEntering {
-  animation: AnimationRouteEnter 250ms ease-in-out;
+.routeWhenEntering.kindScreen {
+  animation: AnimationRouteScreenEnter 250ms ease-in-out;
+  pointer-events: none;
+}
+
+.routeWhenEntering.kindPopup {
+  animation: AnimationRoutePopupEnter 250ms ease-in-out;
   pointer-events: none;
 }
 
 .routeWhenNormal {
 }
 
-.routeWhenLeaving {
-  animation: AnimationRouteLeave 250ms ease-in-out;
+.routeWhenLeaving.kindScreen {
+  animation: AnimationRouteScreenLeave 250ms ease-in-out;
   pointer-events: none;
 }
 
-@keyframes AnimationRouteEnter {
+.routeWhenLeaving.kindPopup {
+  animation: AnimationRoutePopupLeave 250ms ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes AnimationRouteScreenEnter {
   from {
     transform: translateX(100lvw);
     filter: brightness(0);
@@ -26,7 +36,17 @@
   }
 }
 
-@keyframes AnimationRouteLeave {
+@keyframes AnimationRoutePopupEnter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes AnimationRouteScreenLeave {
   from {
     transform: translateX(0);
     filter: brightness(1);
@@ -35,5 +55,15 @@
   to {
     transform: translateX(100lvw);
     filter: brightness(0);
+  }
+}
+
+@keyframes AnimationRoutePopupLeave {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
   }
 }

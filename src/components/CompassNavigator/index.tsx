@@ -12,6 +12,7 @@ const makeRouteKey = sequence();
 
 interface Route<P> {
   key: RouteKey;
+  kind: "screen" | "popup";
   props: P;
   state: "entering" | "normal" | "leaving";
   component: (props: P) => JSX.Element;
@@ -19,7 +20,7 @@ interface Route<P> {
 
 interface CompassContext {
   routeStack: Route<any>[];
-  push<P>(component: (props: P) => JSX.Element, props: P): void;
+  push<P>(component: (props: P) => JSX.Element, props: P, kind?: Route<P>["kind"]): void;
   pop(): void;
 }
 
@@ -34,9 +35,10 @@ export function CompassProvider(props: { children: ComponentChildren }) {
 
   const compass: CompassContext = {
     routeStack,
-    push: (component, props) => {
+    push: (component, props, kind) => {
       const route = {
         key: makeRouteKey(),
+        kind: kind ?? "screen",
         component,
         props,
         state: "entering",
@@ -63,10 +65,12 @@ export function CompassProvider(props: { children: ComponentChildren }) {
   ) {
     console.log("Animation End", routeKey, event.animationName);
     switch (event.animationName) {
-      case style.AnimationRouteEnter:
+      case style.AnimationRouteScreenEnter:
+      case style.AnimationRoutePopupEnter:
         setRouteState(routeKey, "normal");
         break;
-      case style.AnimationRouteLeave:
+      case style.AnimationRouteScreenLeave:
+      case style.AnimationRoutePopupLeave:
         setRouteStack((routeStack) => routeStack.filter((r) => r.key !== routeKey));
         break;
     }
@@ -86,11 +90,16 @@ export function CompassProvider(props: { children: ComponentChildren }) {
           leaving: style.routeWhenLeaving,
         });
 
+        const kindClass = doSwitch(route.kind, {
+          screen: style.kindScreen,
+          popup: style.kindPopup,
+        });
+
         return (
           <section
             key={route.key}
             onAnimationEnd={handleAnimationEndOnRoute.bind(null, route.key)}
-            class={cn("bg-white-0 fixed left-0 top-0 h-full w-full", style.route, animationClass)}>
+            class={cn("fixed left-0 top-0 h-full w-full", style.route, animationClass, kindClass)}>
             <route.component {...route.props} />
           </section>
         );
