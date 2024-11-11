@@ -11,7 +11,16 @@ export default function Menu() {
   return (
     <section class="flex h-full w-full flex-col gap-2 p-4">
       <h1 class="font-bold">Vendoísta</h1>
-      <Button onClick={() => compass.push(LoginView, {})}>Fazer login</Button>
+
+      <div class="mb-4 flex gap-2">
+        <Button class="grow basis-0" onClick={() => {}}>
+          Fazer cadastro
+        </Button>
+        <Button class="grow basis-0" onClick={() => compass.push(LoginView, {})}>
+          Fazer login
+        </Button>
+      </div>
+
       <Button onClick={() => compass.push(ProductListView, {})}>Produtos</Button>
       <Button>Grupos</Button>
       <Button>Gerenciamento de usuários</Button>

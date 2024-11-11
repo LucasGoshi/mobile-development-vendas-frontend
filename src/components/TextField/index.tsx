@@ -90,7 +90,7 @@ export function MultilineTextField(props: MultilineTextFieldProps) {
       placeholder={props.placeholder}
       disabled={props.disabled ?? false}
       class={cn(
-        "border-grey-300 bg-grey-0 text-grey-800 placeholder:text-grey-400 disabled:bg-grey-100 disabled:text-grey-600 inline-flex select-none resize-none gap-2 rounded border px-4 py-2 font-sans hover:shadow-md disabled:shadow-none",
+        "border-grey-800 bg-grey-0 text-grey-800 placeholder:text-grey-400 disabled:bg-grey-100 disabled:text-grey-600 inline-flex select-none gap-2 border px-2 py-1 font-sans shadow-pixel disabled:shadow-none",
         props.class
       )}
       value={props.value}
