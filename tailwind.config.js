@@ -53,9 +53,9 @@ export default {
     extend: {
       boxShadow: (() => {
         const s = (n) =>
-          Array.from(Array(n).keys()).map((i) => `${i + 1}px ${i + 1}px 0 0 #424242`);
+          Array.from(Array(n).keys()).map((i) => `${i + 1}px ${i + 1}px 0 0 #42424270`);
         const inset_s = (n) =>
-          Array.from(Array(n).keys()).map((i) => `inset ${i + 1}px ${i + 1}px 0 0 #424242`);
+          Array.from(Array(n).keys()).map((i) => `inset ${i + 1}px ${i + 1}px 0 0 #42424270`);
 
         return {
           pixel: s(1),

@@ -25,7 +25,7 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
   const validationModel = useMemo(
     () =>
       z.object({
-        name: z.string().min(1, "O nome precisa ter um ou caracteres"),
+        name: z.string().min(1, "O nome precisa ter um ou mais caracteres"),
         description: z.string().min(1, "A descrição precisa ter um ou mais caracteres"),
         purchasePrice: z
           .number({ invalid_type_error: "O preço de compra precisa ser um número válido" })

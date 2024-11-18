@@ -1,3 +1,4 @@
+import useAlertDialog from "../../components/AlertDialog";
 import Button, { IconButton } from "../../components/Button";
 import { useCompass } from "../../components/CompassNavigator";
 import Icon from "../../components/Icon";
@@ -6,6 +7,24 @@ import TestOverlayView from "./TestOverlayView";
 
 export default function ProductListView() {
   const compass = useCompass();
+  const showAlert = useAlertDialog();
+
+  async function handleDeleteButton(productId: number) {
+    const userChoice = await showAlert({
+      kind: "info",
+      title: "Apagar produto?",
+      content: <p>Deseja apagar esse produto?</p>,
+      buttons: {
+        cancel: "Cancelar",
+        yes: "Sim, apagar",
+      },
+    });
+
+    if (userChoice === "yes") {
+      // TODO: Apagar produto
+      alert("Produto Apagado!");
+    }
+  }
 
   return (
     <section class="flex h-full w-full flex-col gap-2 overflow-y-scroll bg-white-0 p-4">
@@ -44,7 +63,7 @@ export default function ProductListView() {
               </div>
               <p>Isso aqui é uma descrição</p>
               <footer class="mt-2 hidden justify-stretch gap-1 group-focus-within:flex">
-                <Button class="flex-1 grow">
+                <Button class="flex-1 grow" onClick={handleDeleteButton.bind(null, i)}>
                   <Icon name="Delete" />
                   Remover
                 </Button>
