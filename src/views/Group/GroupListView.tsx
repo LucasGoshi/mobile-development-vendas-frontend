@@ -1,27 +1,26 @@
 import { useEffect, useState } from "preact/hooks";
-import { produtoDelete, produtoGetAll } from "../../api/client";
-import { Produto } from "../../api/entities";
 import useAlertDialog from "../../components/AlertDialog";
 import Button, { IconButton } from "../../components/Button";
 import { useCompass } from "../../components/CompassNavigator";
 import Icon from "../../components/Icon";
-import ProductCreateUpdateView from "./ProductCreateUpdate";
-import TestOverlayView from "./TestOverlayView";
+import { Grupo } from "../../api/entities";
+import { grupoDelete, grupoGetAll } from "../../api/client";
+import GroupCreateUpdateView from "./GroupCreateUpdate";
 
-export default function ProductListView() {
+export default function GroupListView() {
   const compass = useCompass();
   const showAlert = useAlertDialog();
 
-  const [allProducts, setAllProducts] = useState<Produto[]>([]);
+  const [allGroups, setAllGroups] = useState<Grupo[]>([]);
   async function refreshData() {
-    setAllProducts(await produtoGetAll());
+    setAllGroups(await grupoGetAll());
   }
 
   useEffect(() => {
     refreshData();
   }, []);
 
-  async function handleDeleteButton(productId: number) {
+  async function handleDeleteButton(groupId: number) {
     const userChoice = await showAlert({
       kind: "info",
       title: "Apagar produto?",
@@ -33,11 +32,10 @@ export default function ProductListView() {
     });
 
     if (userChoice === "yes") {
-      // TODO: Apagar produto
-      alert("Produto Apagado!");
+      alert("Grupo apagado!");
     }
 
-    await produtoDelete(productId);
+    await grupoDelete(groupId);
     refreshData();
   }
 
@@ -51,50 +49,38 @@ export default function ProductListView() {
         <IconButton
           iconName="Add"
           onClick={() =>
-            compass.push(ProductCreateUpdateView, {
+            compass.push(GroupCreateUpdateView, {
               operation: "CreateNew",
               notifyMutated: () => refreshData(),
             })
           }
         />
-        <IconButton
-          iconName="Refresh"
-          onClick={() => compass.push(TestOverlayView, {}, { kind: "popup" })}
-        />
+        <IconButton iconName="Refresh" />
       </div>
       <ul class="flex grow flex-col gap-2">
-        {allProducts.map((product) => {
+        {allGroups.map((group) => {
           return (
             <li
-              key={product.id}
+              key={group.id}
               class="group flex w-full flex-col border border-white-800 bg-white-100 p-2 shadow-pixel-sm focus-within:shadow-none"
               tabIndex={0}>
-              <span class="font-mono text-sm">{product.grupo.id}</span>
-              <h2 class="font-bold">{product.nome}</h2>
-              <span class="font-mono text-sm">
-                {product.fabricante.nomeFantasia || product.fabricante.razaoSocial}
-              </span>
-              <div class="flex gap-2">
-                <span class="font-mono">
-                  <span class="text-sm">Compra</span> R$ {product.precoCompra.toFixed(2)}
-                </span>
-                <span>·</span>
-                <span class="font-mono">
-                  <span class="text-sm">Venda</span> R$ {product.precoVenda.toFixed(2)}
-                </span>
-              </div>
-              <p>{product.descricao}</p>
+              <span class="font-mono text-sm">(id #{group.id})</span>
+              <h2 class="font-bold">{group.nome}</h2>
+              {group.grupoParenteId !== null && (
+                <span class="font-mono text-sm">(filho do grupo #{group.grupoParenteId})</span>
+              )}
+              <p>{group.descricao}</p>
               <footer class="mt-2 hidden justify-stretch gap-1 group-focus-within:flex">
-                <Button class="flex-1 grow" onClick={handleDeleteButton.bind(null, product.id)}>
+                <Button class="flex-1 grow" onClick={handleDeleteButton.bind(null, group.id)}>
                   <Icon name="Delete" />
                   Remover
                 </Button>
                 <Button
                   class="flex-1 grow"
                   onClick={() =>
-                    compass.push(ProductCreateUpdateView, {
+                    compass.push(GroupCreateUpdateView, {
                       operation: "Update",
-                      seed: product,
+                      seed: group,
                       notifyMutated: () => refreshData(),
                     })
                   }>

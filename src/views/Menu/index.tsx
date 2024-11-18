@@ -1,6 +1,7 @@
 import useAlertDialog from "../../components/AlertDialog";
 import Button from "../../components/Button";
 import { useCompass } from "../../components/CompassNavigator";
+import GroupListView from "../Group/GroupListView";
 import LoginView from "../Login";
 import ProductListView from "../Product/ProductListView";
 
@@ -22,7 +23,7 @@ export default function Menu() {
       </div>
 
       <Button onClick={() => compass.push(ProductListView, {})}>Produtos</Button>
-      <Button>Grupos</Button>
+      <Button onClick={() => compass.push(GroupListView, {})}>Grupos</Button>
       <Button>Gerenciamento de usuários</Button>
       <Button
         onClick={async () => {

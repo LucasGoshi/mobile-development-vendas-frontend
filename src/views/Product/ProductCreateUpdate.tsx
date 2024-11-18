@@ -1,4 +1,4 @@
-import { useMemo, useState } from "preact/hooks";
+import { useEffect, useMemo, useState } from "preact/hooks";
 import Button, { IconButton } from "../../components/Button";
 import ComboBox from "../../components/ComboBox";
 import ComboBoxOption from "../../components/ComboBox/ComboBoxOption";
@@ -6,21 +6,27 @@ import { useCompass } from "../../components/CompassNavigator";
 import Icon from "../../components/Icon";
 import TextField, { MultilineTextField } from "../../components/TextField";
 import { z } from "zod";
+import { Fabricante, Grupo, Produto } from "../../api/entities";
+import { fabricanteGetAll, grupoGetAll } from "../../api/client";
 
 interface ProductCreateUpdateViewProps {
-  // seed: Product;
+  seed?: Produto;
   operation: "CreateNew" | "Update";
+  /**
+   * Usado para informar a rota parente que deve atualizar seus dados.
+   */
+  notifyMutated: () => void;
 }
 
 export default function ProductCreateUpdateView(props: ProductCreateUpdateViewProps) {
   const compass = useCompass();
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [purchasePrice, setPurchasePrice] = useState(0);
-  const [salePrice, setSalePrice] = useState(0);
-  const [companyId, setCompanyId] = useState(0);
-  const [categoryId, setCategoryId] = useState(0);
+  const [name, setName] = useState(props.seed?.nome ?? "");
+  const [description, setDescription] = useState(props.seed?.descricao ?? "");
+  const [purchasePrice, setPurchasePrice] = useState(props.seed?.precoCompra ?? 0);
+  const [salePrice, setSalePrice] = useState(props.seed?.precoVenda ?? 0);
+  const [companyId, setCompanyId] = useState(props.seed?.fabricante.id ?? 0);
+  const [categoryId, setCategoryId] = useState(props.seed?.grupo.id ?? 0);
 
   const validationModel = useMemo(
     () =>
@@ -55,6 +61,17 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
   function handleFormSubmit(e: Event) {
     e.preventDefault();
   }
+
+  useEffect(() => {
+    return () => props.notifyMutated();
+  });
+
+  const [allGroups, setAllGroups] = useState<Grupo[]>([]);
+  const [allFabricantes, setAllFabricantes] = useState<Fabricante[]>([]);
+  useEffect(() => {
+    grupoGetAll().then((grupos) => setAllGroups(grupos));
+    fabricanteGetAll().then((fabs) => setAllFabricantes(fabs));
+  }, []);
 
   return (
     <section class="flex h-full w-full flex-col gap-2 bg-white-0 p-4">
@@ -110,17 +127,21 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
         <label class="flex flex-col">
           Fabricante
           <ComboBox value={companyId.toString()} onChange={(c) => setCompanyId(parseInt(c) ?? 1)}>
-            <ComboBoxOption kind="option" value="1">
-              Samsung
-            </ComboBoxOption>
+            {allFabricantes.map((fab) => (
+              <ComboBoxOption kind="option" value={fab.id.toString()}>
+                #{fab.id} - {fab.nomeFantasia} {fab.razaoSocial}
+              </ComboBoxOption>
+            ))}
           </ComboBox>
         </label>
         <label class="flex flex-col">
           Grupo pertencente
           <ComboBox value={categoryId.toString()} onChange={(c) => setCategoryId(parseInt(c) ?? 1)}>
-            <ComboBoxOption kind="option" value="1">
-              Grupo 1
-            </ComboBoxOption>
+            {allGroups.map((group) => (
+              <ComboBoxOption kind="option" value={group.id.toString()}>
+                {group.nome} - {group.descricao || "Sem descrição"}
+              </ComboBoxOption>
+            ))}
           </ComboBox>
         </label>
         {validationError && (
