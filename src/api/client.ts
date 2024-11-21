@@ -1,6 +1,6 @@
 import type { Fabricante, Grupo, Produto, Venda } from "./entities";
 
-const API_BASE = "http://senai:3000";
+const API_BASE = "http://senai:8080";
 
 const get = async <T>(route: string): Promise<T> => {
   const response = await fetch(`${API_BASE}${route}`);

@@ -23,8 +23,8 @@ export default function GroupListView() {
   async function handleDeleteButton(groupId: number) {
     const userChoice = await showAlert({
       kind: "info",
-      title: "Apagar produto?",
-      content: <p>Deseja apagar esse produto?</p>,
+      title: "Apagar grupo?",
+      content: <p>Deseja apagar esse grupo?</p>,
       buttons: {
         cancel: "Cancelar",
         yes: "Sim, apagar",
@@ -43,7 +43,7 @@ export default function GroupListView() {
     <section class="flex h-full w-full flex-col gap-2 overflow-y-scroll bg-white-0 p-4">
       <header class="flex items-center gap-2">
         <IconButton iconName="ArrowLeft" onClick={compass.pop} />
-        <h1 class="font-bold">Lista de produtos</h1>
+        <h1 class="font-bold">Lista de grupos</h1>
       </header>
       <div class="flex justify-end gap-1">
         <IconButton

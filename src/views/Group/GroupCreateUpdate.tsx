@@ -61,7 +61,7 @@ export default function GroupCreateUpdateView(props: GroupCreateUpdateViewProps)
   }, []);
 
   return (
-    <section class="flex h-full w-full flex-col gap-2 bg-white-0 p-4">
+    <section class="flex h-full w-full flex-col gap-2 overflow-y-scroll bg-white-0 p-4">
       <header class="flex items-center gap-2">
         <IconButton iconName="ArrowLeft" onClick={compass.pop} />
         <h1 class="font-bold">
@@ -95,7 +95,7 @@ export default function GroupCreateUpdateView(props: GroupCreateUpdateViewProps)
           </div>
         )}
         <footer class="flex justify-end">
-          <Button disabled={!!validationError}>
+          <Button disabled={!!validationError} onClick={handleFormSubmit}>
             <Icon name={props.operation === "CreateNew" ? "Add" : "Build"} />
             {props.operation === "CreateNew" ? "Cadastrar" : "Atualizar"}
           </Button>

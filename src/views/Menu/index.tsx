@@ -1,6 +1,7 @@
 import useAlertDialog from "../../components/AlertDialog";
 import Button from "../../components/Button";
 import { useCompass } from "../../components/CompassNavigator";
+import CompanyListView from "../Company/CompanyListView";
 import GroupListView from "../Group/GroupListView";
 import LoginView from "../Login";
 import ProductListView from "../Product/ProductListView";
@@ -12,19 +13,9 @@ export default function Menu() {
   return (
     <section class="flex h-full w-full flex-col gap-2 p-4">
       <h1 class="font-bold">Vendoísta</h1>
-
-      <div class="mb-4 flex gap-2">
-        <Button class="grow basis-0" onClick={() => {}}>
-          Fazer cadastro
-        </Button>
-        <Button class="grow basis-0" onClick={() => compass.push(LoginView, {})}>
-          Fazer login
-        </Button>
-      </div>
-
       <Button onClick={() => compass.push(ProductListView, {})}>Produtos</Button>
       <Button onClick={() => compass.push(GroupListView, {})}>Grupos</Button>
-      <Button>Gerenciamento de usuários</Button>
+      <Button onClick={() => compass.push(CompanyListView, {})}>Fornecedores</Button>
       <Button
         onClick={async () => {
           await showAlert({

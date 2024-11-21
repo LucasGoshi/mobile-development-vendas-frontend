@@ -12,9 +12,9 @@ export interface Fabricante {
   id: number;
   nomeFantasia: string;
   razaoSocial: string;
-  cnpj: number;
+  cnpj: string;
   endereco: string;
-  telefone: number;
+  telefone: string;
   email: string;
   vendedor: string;
 }
