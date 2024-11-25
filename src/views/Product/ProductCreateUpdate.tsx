@@ -7,7 +7,8 @@ import Icon from "../../components/Icon";
 import TextField, { MultilineTextField } from "../../components/TextField";
 import { z } from "zod";
 import { Fabricante, Grupo, Produto } from "../../api/entities";
-import { fabricanteGetAll, grupoGetAll } from "../../api/client";
+import { fabricanteGetAll, grupoGetAll, produtoCreate } from "../../api/client";
+import useAlertDialog from "../../components/AlertDialog";
 
 interface ProductCreateUpdateViewProps {
   seed?: Produto;
@@ -20,6 +21,7 @@ interface ProductCreateUpdateViewProps {
 
 export default function ProductCreateUpdateView(props: ProductCreateUpdateViewProps) {
   const compass = useCompass();
+  const showAlert = useAlertDialog();
 
   const [name, setName] = useState(props.seed?.nome ?? "");
   const [description, setDescription] = useState(props.seed?.descricao ?? "");
@@ -31,35 +33,61 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
   const validationModel = useMemo(
     () =>
       z.object({
-        name: z.string().min(1, "O nome precisa ter um ou mais caracteres"),
-        description: z.string().min(1, "A descrição precisa ter um ou mais caracteres"),
-        purchasePrice: z
+        id: z.number().optional(),
+        nome: z.string().min(1, "O nome precisa ter um ou mais caracteres"),
+        descricao: z.string().min(1, "A descrição precisa ter um ou mais caracteres"),
+        precoCompra: z
           .number({ invalid_type_error: "O preço de compra precisa ser um número válido" })
           .min(0, "O preço de compra precisa ser um número positivo"),
-        salePrice: z
+        precoVenda: z
           .number({ invalid_type_error: "O preço de venda precisa ser um número válido" })
           .min(0, "O preço de venda precisa ser um número positivo"),
-        companyId: z
+        grupoId: z.number().refine(() => true, "Categoria inválida"),
+        fabricanteId: z
           .number()
           .refine(() => true /* todo check if valid company id */, "Fabricante inválido"),
-        categoryId: z.number().refine(() => true, "Categoria inválida"),
       }),
     []
   );
 
   const formState = {
-    name,
-    description,
-    purchasePrice,
-    salePrice,
-    companyId,
-    categoryId,
+    nome: name,
+    descricao: description,
+    precoCompra: purchasePrice,
+    precoVenda: salePrice,
+    fabricanteId: companyId,
+    grupoId: categoryId,
   } satisfies z.infer<typeof validationModel>;
 
-  const { error: validationError } = validationModel.safeParse(formState);
+  const { error: validationError, data } = validationModel.safeParse(formState);
 
-  function handleFormSubmit(e: Event) {
+  async function handleFormSubmit(e: Event) {
     e.preventDefault();
+    if (!data) return;
+
+    try {
+      const result = await produtoCreate(data);
+      await showAlert({
+        kind: "info",
+        title: `${props.operation === "CreateNew" ? "Inserido" : "Atualizado"} com sucesso`,
+        content: <p>A operação foi concluída.</p>,
+        buttons: {
+          ok: "OK",
+        },
+      });
+      props.notifyMutated();
+      compass.pop();
+    } catch (error) {
+      console.error(error);
+      await showAlert({
+        kind: "warn",
+        title: `Erro ao ${props.operation === "CreateNew" ? "inserir" : "atualizar"}`,
+        content: <p>Houve um erro ao atualizar.</p>,
+        buttons: {
+          ok: "OK",
+        },
+      });
+    }
   }
 
   useEffect(() => {

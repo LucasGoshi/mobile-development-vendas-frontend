@@ -33,12 +33,15 @@ export default function ProductListView() {
     });
 
     if (userChoice === "yes") {
-      // TODO: Apagar produto
-      alert("Produto Apagado!");
+      await produtoDelete(productId);
+      await refreshData();
+      await showAlert({
+        kind: "info",
+        title: "Sucesso",
+        content: <p>Produto apagado!</p>,
+        buttons: { ok: "OK" },
+      });
     }
-
-    await produtoDelete(productId);
-    refreshData();
   }
 
   return (
@@ -57,10 +60,7 @@ export default function ProductListView() {
             })
           }
         />
-        <IconButton
-          iconName="Refresh"
-          onClick={() => compass.push(TestOverlayView, {}, { kind: "popup" })}
-        />
+        <IconButton iconName="Refresh" onClick={refreshData} />
       </div>
       <ul class="flex grow flex-col gap-2">
         {allProducts.map((product) => {

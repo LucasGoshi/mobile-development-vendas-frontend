@@ -32,11 +32,15 @@ export default function GroupListView() {
     });
 
     if (userChoice === "yes") {
-      alert("Grupo apagado!");
+      await grupoDelete(groupId);
+      await refreshData();
+      await showAlert({
+        kind: "info",
+        title: "Sucesso",
+        content: <p>Grupo apagado!</p>,
+        buttons: { ok: "OK" },
+      });
     }
-
-    await grupoDelete(groupId);
-    refreshData();
   }
 
   return (
@@ -55,7 +59,7 @@ export default function GroupListView() {
             })
           }
         />
-        <IconButton iconName="Refresh" />
+        <IconButton iconName="Refresh" onClick={refreshData} />
       </div>
       <ul class="flex grow flex-col gap-2">
         {allGroups.map((group) => {

@@ -32,11 +32,15 @@ export default function CompanyListView() {
     });
 
     if (userChoice === "yes") {
-      alert("Fabricante apagado!");
+      await fabricanteDelete(companyId);
+      await refreshData();
+      await showAlert({
+        kind: "info",
+        title: "Sucesso",
+        content: <p>Fabricante apagado!</p>,
+        buttons: { ok: "OK" },
+      });
     }
-
-    await fabricanteDelete(companyId);
-    refreshData();
   }
 
   return (
@@ -55,7 +59,7 @@ export default function CompanyListView() {
             })
           }
         />
-        <IconButton iconName="Refresh" />
+        <IconButton iconName="Refresh" onClick={refreshData} />
       </div>
       <ul class="flex grow flex-col gap-2">
         {allCompanys.map((company) => {

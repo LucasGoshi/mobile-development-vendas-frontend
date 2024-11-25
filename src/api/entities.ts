@@ -8,6 +8,13 @@ export interface Produto {
   fabricante: Fabricante;
 }
 
+export type ProdutoUpdate = Omit<Produto, "grupo" | "fabricante"> & {
+  grupoId: number;
+  fabricanteId: number;
+};
+
+export type ProdutoCreate = Omit<ProdutoUpdate, "id">;
+
 export interface Fabricante {
   id: number;
   nomeFantasia: string;

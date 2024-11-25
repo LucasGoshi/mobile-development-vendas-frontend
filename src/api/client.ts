@@ -1,6 +1,6 @@
-import type { Fabricante, Grupo, Produto, Venda } from "./entities";
+import type { Fabricante, Grupo, Produto, ProdutoCreate, ProdutoUpdate, Venda } from "./entities";
 
-const API_BASE = "http://senai:8080";
+const API_BASE = "http://localhost:8010/proxy";
 
 const get = async <T>(route: string): Promise<T> => {
   const response = await fetch(`${API_BASE}${route}`);
@@ -38,8 +38,8 @@ const httpDelete = async (route: string): Promise<void> => {
 
 export const produtoGetAll = () => get<Produto[]>("/api/produto");
 export const produtoGetOne = (id: number) => get<Produto>(`/api/produto/${id}`);
-export const produtoCreate = (produto: Omit<Produto, "id">) => post("/api/produto/novo", produto);
-export const produtoUpdate = (produto: Produto) =>
+export const produtoCreate = (produto: ProdutoCreate) => post("/api/produto/novo", produto);
+export const produtoUpdate = (produto: ProdutoUpdate) =>
   put(`/api/produto/atualizar/${produto.id}`, produto);
 export const produtoDelete = (id: number) => httpDelete(`/api/produto/remover/${id}`);
 

@@ -7,7 +7,8 @@ import Icon from "../../components/Icon";
 import TextField, { MultilineTextField } from "../../components/TextField";
 import { z } from "zod";
 import { Grupo } from "../../api/entities";
-import { grupoGetAll } from "../../api/client";
+import { grupoCreate, grupoGetAll } from "../../api/client";
+import useAlertDialog from "../../components/AlertDialog";
 
 interface GroupCreateUpdateViewProps {
   seed?: Grupo;
@@ -20,6 +21,8 @@ interface GroupCreateUpdateViewProps {
 
 export default function GroupCreateUpdateView(props: GroupCreateUpdateViewProps) {
   const compass = useCompass();
+
+  const showAlert = useAlertDialog();
 
   const [allGroups, setAllGroups] = useState<Grupo[]>([]);
   useEffect(() => {
@@ -50,10 +53,36 @@ export default function GroupCreateUpdateView(props: GroupCreateUpdateViewProps)
     grupoParenteId: parentGroupId,
   } satisfies z.infer<typeof validationModel>;
 
-  const { error: validationError } = validationModel.safeParse(formState);
+  const { error: validationError, data } = validationModel.safeParse(formState);
 
-  function handleFormSubmit(e: Event) {
+  async function handleFormSubmit(e: Event) {
     e.preventDefault();
+
+    if (!data) return;
+
+    try {
+      const result = await grupoCreate(data);
+      await showAlert({
+        kind: "info",
+        title: `${props.operation === "CreateNew" ? "Inserido" : "Atualizado"} com sucesso`,
+        content: <p>A operação foi concluída.</p>,
+        buttons: {
+          ok: "OK",
+        },
+      });
+      props.notifyMutated();
+      compass.pop();
+    } catch (error) {
+      console.error(error);
+      await showAlert({
+        kind: "warn",
+        title: `Erro ao ${props.operation === "CreateNew" ? "inserir" : "atualizar"}`,
+        content: <p>Houve um erro ao atualizar.</p>,
+        buttons: {
+          ok: "OK",
+        },
+      });
+    }
   }
 
   useEffect(() => {
