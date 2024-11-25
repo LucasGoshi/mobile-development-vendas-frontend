@@ -6,7 +6,7 @@ import { useCompass } from "../../components/CompassNavigator";
 import Icon from "../../components/Icon";
 import TextField from "../../components/TextField";
 import { z } from "zod";
-import { Produto,Venda } from "../../api/entities";
+import { Produto, Venda } from "../../api/entities";
 import { produtoGetAll } from "../../api/client";
 
 interface SaleCreateUpdateViewProps {
@@ -56,7 +56,7 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
 
   useEffect(() => {
     return () => props.notifyMutated();
-  });
+  }, []);
 
   const [allProducts, setAllProducts] = useState<Produto[]>([]);
   useEffect(() => {
@@ -74,17 +74,11 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
       <form onSubmit={handleFormSubmit} class="flex flex-col gap-2">
         <label class="flex flex-col">
           Quantidade
-          <TextField
-            kind="number"
-            value={quantity}
-            onInput={setQuantity}
-          />
+          <TextField kind="number" value={quantity} onInput={setQuantity} />
         </label>
         <label class="flex flex-col">
           Produto
-          <ComboBox
-            value={productId.toString()}
-            onChange={(id) => setProductId(parseInt(id) || 0)}>
+          <ComboBox value={productId.toString()} onChange={(id) => setProductId(parseInt(id) || 0)}>
             {allProducts.map((product) => (
               <ComboBoxOption kind="option" value={product.id.toString()}>
                 {product.nome} - {product.fabricante.nomeFantasia || product.fabricante.razaoSocial}
@@ -98,7 +92,7 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
             type="datetime-local"
             value={dateTime}
             onInput={(e) => setDateTime((e.target as HTMLInputElement).value)}
-            class="border border-gray-400 rounded p-1"
+            class="border-gray-400 rounded border p-1"
           />
         </label>
         {validationError && (

@@ -9,8 +9,8 @@ export interface Produto {
 }
 
 export type ProdutoUpdate = Omit<Produto, "grupo" | "fabricante"> & {
-  grupoId: number;
-  fabricanteId: number;
+  grupo: Pick<Produto, "id"> | null;
+  fabricante: Pick<Fabricante, "id"> | null;
 };
 
 export type ProdutoCreate = Omit<ProdutoUpdate, "id">;

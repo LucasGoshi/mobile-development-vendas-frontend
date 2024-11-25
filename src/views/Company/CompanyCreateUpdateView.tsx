@@ -5,6 +5,8 @@ import Icon from "../../components/Icon";
 import TextField from "../../components/TextField";
 import { z } from "zod";
 import { Fabricante } from "../../api/entities";
+import { fabricanteCreate, fabricanteUpdate } from "../../api/client";
+import useAlertDialog from "../../components/AlertDialog";
 
 interface CompanyCreateUpdateViewProps {
   seed?: Fabricante;
@@ -17,6 +19,7 @@ interface CompanyCreateUpdateViewProps {
 
 export default function CompanyCreateUpdateView(props: CompanyCreateUpdateViewProps) {
   const compass = useCompass();
+  const showAlert = useAlertDialog();
 
   const [nomeFantasia, setNomeFantasia] = useState(props.seed?.nomeFantasia ?? "");
   const [razaoSocial, setRazaoSocial] = useState(props.seed?.razaoSocial ?? "");
@@ -64,8 +67,52 @@ export default function CompanyCreateUpdateView(props: CompanyCreateUpdateViewPr
 
   const { error: validationError } = validationModel.safeParse(formState);
 
-  function handleFormSubmit(e: Event) {
+  async function handleFormSubmit(e: Event) {
     e.preventDefault();
+
+    try {
+      const result =
+        props.operation === "CreateNew"
+          ? await fabricanteCreate({
+              nomeFantasia: formState.nomeFantasia,
+              razaoSocial: formState.razaoSocial,
+              cnpj: formState.cnpj.replace(/[^0-9]/g, ""),
+              endereco: formState.endereco,
+              telefone: formState.telefone,
+              email: formState.email,
+              vendedor: formState.vendedor,
+            })
+          : await fabricanteUpdate({
+              id: formState.id!,
+              nomeFantasia: formState.nomeFantasia,
+              razaoSocial: formState.razaoSocial,
+              cnpj: formState.cnpj.replace(/[^\d]/g, ""),
+              endereco: formState.endereco,
+              telefone: formState.telefone,
+              email: formState.email,
+              vendedor: formState.vendedor,
+            });
+      await showAlert({
+        kind: "info",
+        title: `${props.operation === "CreateNew" ? "Inserido" : "Atualizado"} com sucesso`,
+        content: <p>A operação foi concluída.</p>,
+        buttons: {
+          ok: "OK",
+        },
+      });
+      props.notifyMutated();
+      compass.pop();
+    } catch (error) {
+      console.error(error);
+      await showAlert({
+        kind: "warn",
+        title: `Erro ao ${props.operation === "CreateNew" ? "inserir" : "atualizar"}`,
+        content: <p>Houve um erro ao atualizar.</p>,
+        buttons: {
+          ok: "OK",
+        },
+      });
+    }
   }
 
   useEffect(() => {

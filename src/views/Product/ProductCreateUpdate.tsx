@@ -27,8 +27,8 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
   const [description, setDescription] = useState(props.seed?.descricao ?? "");
   const [purchasePrice, setPurchasePrice] = useState(props.seed?.precoCompra ?? 0);
   const [salePrice, setSalePrice] = useState(props.seed?.precoVenda ?? 0);
-  const [companyId, setCompanyId] = useState(props.seed?.fabricante.id ?? 0);
-  const [categoryId, setCategoryId] = useState(props.seed?.grupo.id ?? 0);
+  const [companyId, setCompanyId] = useState(props.seed?.fabricante.id ?? -1);
+  const [categoryId, setCategoryId] = useState(props.seed?.grupo.id ?? -1);
 
   const validationModel = useMemo(
     () =>
@@ -42,10 +42,8 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
         precoVenda: z
           .number({ invalid_type_error: "O preço de venda precisa ser um número válido" })
           .min(0, "O preço de venda precisa ser um número positivo"),
-        grupoId: z.number().refine(() => true, "Categoria inválida"),
-        fabricanteId: z
-          .number()
-          .refine(() => true /* todo check if valid company id */, "Fabricante inválido"),
+        grupoId: z.number().refine((n) => n !== -1, "Categoria inválida"),
+        fabricanteId: z.number().refine((n) => n !== -1, "Fabricante inválido"),
       }),
     []
   );
@@ -66,7 +64,14 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
     if (!data) return;
 
     try {
-      const result = await produtoCreate(data);
+      const result = await produtoCreate({
+        nome: formState.nome,
+        descricao: formState.descricao,
+        precoCompra: formState.precoCompra,
+        precoVenda: formState.precoVenda,
+        fabricante: { id: formState.fabricanteId },
+        grupo: { id: formState.grupoId },
+      });
       await showAlert({
         kind: "info",
         title: `${props.operation === "CreateNew" ? "Inserido" : "Atualizado"} com sucesso`,
@@ -92,7 +97,7 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
 
   useEffect(() => {
     return () => props.notifyMutated();
-  });
+  }, []);
 
   const [allGroups, setAllGroups] = useState<Grupo[]>([]);
   const [allFabricantes, setAllFabricantes] = useState<Fabricante[]>([]);
@@ -155,6 +160,9 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
         <label class="flex flex-col">
           Fabricante
           <ComboBox value={companyId.toString()} onChange={(c) => setCompanyId(parseInt(c) ?? 1)}>
+            <ComboBoxOption kind="option" value="-1">
+              [nenhum fabricante]
+            </ComboBoxOption>
             {allFabricantes.map((fab) => (
               <ComboBoxOption kind="option" value={fab.id.toString()}>
                 #{fab.id} - {fab.nomeFantasia} {fab.razaoSocial}
@@ -163,8 +171,11 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
           </ComboBox>
         </label>
         <label class="flex flex-col">
-          Grupo pertencente
+          Categoria pertencente
           <ComboBox value={categoryId.toString()} onChange={(c) => setCategoryId(parseInt(c) ?? 1)}>
+            <ComboBoxOption kind="option" value="-1">
+              [nenhum grupo]
+            </ComboBoxOption>
             {allGroups.map((group) => (
               <ComboBoxOption kind="option" value={group.id.toString()}>
                 {group.nome} - {group.descricao || "Sem descrição"}

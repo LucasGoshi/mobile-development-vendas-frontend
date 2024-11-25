@@ -26,12 +26,12 @@ export default function GroupCreateUpdateView(props: GroupCreateUpdateViewProps)
 
   const [allGroups, setAllGroups] = useState<Grupo[]>([]);
   useEffect(() => {
-    grupoGetAll().then((grupos) => setAllGroups(grupos));
+    grupoGetAll().then((grupos) => setAllGroups(grupos.filter((g) => g.id !== props.seed?.id)));
   }, []);
 
   const [name, setName] = useState(props.seed?.nome ?? "");
   const [description, setDescription] = useState(props.seed?.descricao ?? "");
-  const [parentGroupId, setParentGroupId] = useState(props.seed?.grupoParenteId ?? 0);
+  const [parentGroupId, setParentGroupId] = useState(props.seed?.grupoParenteId ?? -1);
 
   const validationModel = useMemo(
     () =>
@@ -39,9 +39,7 @@ export default function GroupCreateUpdateView(props: GroupCreateUpdateViewProps)
         id: z.number().int().optional(),
         nome: z.string().min(1, "O nome precisa ter um ou mais caracteres"),
         descricao: z.string().min(1, "A descrição precisa ter um ou mais caracteres"),
-        grupoParenteId: z
-          .number()
-          .refine(() => true /* todo check if valid company id */, "Grupo parente inválido"),
+        grupoParenteId: z.number().transform((n) => (n === -1 ? null : n)),
       }),
     []
   );
@@ -110,7 +108,10 @@ export default function GroupCreateUpdateView(props: GroupCreateUpdateViewProps)
           Grupo pertencente
           <ComboBox
             value={parentGroupId.toString()}
-            onChange={(c) => setParentGroupId(parseInt(c) ?? 1)}>
+            onChange={(c) => setParentGroupId(parseInt(c) ?? -1)}>
+            <ComboBoxOption kind="option" value="-1">
+              [sem grupo parente]
+            </ComboBoxOption>
             {allGroups.map((group) => (
               <ComboBoxOption kind="option" value={group.id.toString()}>
                 {group.nome} - {group.descricao || "Sem descrição"}

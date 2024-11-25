@@ -66,7 +66,7 @@ export default function CompanyListView() {
           return (
             <li
               key={company.id}
-              class="company flex w-full flex-col border border-white-800 bg-white-100 p-2 shadow-pixel-sm focus-within:shadow-none"
+              class="group flex w-full flex-col overflow-hidden border border-white-800 bg-white-100 p-2 shadow-pixel-sm focus-within:shadow-none"
               tabIndex={0}>
               <span class="font-mono text-sm">(id #{company.id})</span>
               <span class="font-mono">
@@ -90,7 +90,7 @@ export default function CompanyListView() {
               <span class="font-mono">
                 <span class="text-sm">Vendedor:</span> {company.vendedor}
               </span>
-              <footer class="company-focus-within:flex mt-2 hidden justify-stretch gap-1">
+              <footer class="mt-2 hidden justify-stretch gap-1 group-focus-within:flex">
                 <Button class="flex-1 grow" onClick={handleDeleteButton.bind(null, company.id)}>
                   <Icon name="Delete" />
                   Remover
