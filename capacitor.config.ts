@@ -5,10 +5,10 @@ const config: CapacitorConfig = {
   appName: "Vendoista",
   webDir: "dist",
   // Usar essa configuração durante desenvolvimento + HMR
-  server: {
-    url: "http://senai:5173",
-    cleartext: true,
-  },
+  //server: {
+    //url: "http://senai:5173",
+    //cleartext: true,
+  //},
 };
 
 export default config;

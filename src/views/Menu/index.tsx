@@ -3,8 +3,9 @@ import Button from "../../components/Button";
 import { useCompass } from "../../components/CompassNavigator";
 import CompanyListView from "../Company/CompanyListView";
 import GroupListView from "../Group/GroupListView";
-import LoginView from "../Login";
+//import LoginView from "../Login";
 import ProductListView from "../Product/ProductListView";
+import SaleListView from "../Sale/SaleListView";
 
 export default function Menu() {
   const compass = useCompass();
@@ -16,6 +17,7 @@ export default function Menu() {
       <Button onClick={() => compass.push(ProductListView, {})}>Produtos</Button>
       <Button onClick={() => compass.push(GroupListView, {})}>Grupos</Button>
       <Button onClick={() => compass.push(CompanyListView, {})}>Fornecedores</Button>
+      <Button onClick={() => compass.push(SaleListView, {})}>Vendas</Button>
       <Button
         onClick={async () => {
           await showAlert({

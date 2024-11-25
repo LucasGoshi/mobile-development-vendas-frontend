@@ -1,6 +1,6 @@
 import { ComponentChildren } from "preact";
 import { useCompass } from "../CompassNavigator";
-import { useEffect, useRef } from "preact/hooks";
+import {  useRef } from "preact/hooks";
 import Button from "../Button";
 import Deferred from "../../utils/Deferred";
 
