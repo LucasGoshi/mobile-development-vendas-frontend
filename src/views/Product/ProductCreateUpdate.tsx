@@ -7,7 +7,7 @@ import Icon from "../../components/Icon";
 import TextField, { MultilineTextField } from "../../components/TextField";
 import { z } from "zod";
 import { Fabricante, Grupo, Produto } from "../../api/entities";
-import { fabricanteGetAll, grupoGetAll, produtoCreate } from "../../api/client";
+import { fabricanteGetAll, grupoGetAll, produtoCreate, produtoUpdate } from "../../api/client";
 import useAlertDialog from "../../components/AlertDialog";
 
 interface ProductCreateUpdateViewProps {
@@ -64,14 +64,25 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
     if (!data) return;
 
     try {
-      const result = await produtoCreate({
-        nome: formState.nome,
-        descricao: formState.descricao,
-        precoCompra: formState.precoCompra,
-        precoVenda: formState.precoVenda,
-        fabricante: { id: formState.fabricanteId },
-        grupo: { id: formState.grupoId },
-      });
+      const result =
+        props.operation === "CreateNew"
+          ? await produtoCreate({
+              nome: formState.nome,
+              descricao: formState.descricao,
+              precoCompra: formState.precoCompra,
+              precoVenda: formState.precoVenda,
+              fabricante: { id: formState.fabricanteId },
+              grupo: { id: formState.grupoId },
+            })
+          : await produtoUpdate({
+              id: props.seed!.id,
+              nome: formState.nome,
+              descricao: formState.descricao,
+              precoCompra: formState.precoCompra,
+              precoVenda: formState.precoVenda,
+              fabricante: { id: formState.fabricanteId },
+              grupo: { id: formState.grupoId },
+            });
       await showAlert({
         kind: "info",
         title: `${props.operation === "CreateNew" ? "Inserido" : "Atualizado"} com sucesso`,

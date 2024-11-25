@@ -7,7 +7,7 @@ import Icon from "../../components/Icon";
 import TextField, { MultilineTextField } from "../../components/TextField";
 import { z } from "zod";
 import { Grupo } from "../../api/entities";
-import { grupoCreate, grupoGetAll } from "../../api/client";
+import { grupoCreate, grupoGetAll, grupoUpdate } from "../../api/client";
 import useAlertDialog from "../../components/AlertDialog";
 
 interface GroupCreateUpdateViewProps {
@@ -59,7 +59,8 @@ export default function GroupCreateUpdateView(props: GroupCreateUpdateViewProps)
     if (!data) return;
 
     try {
-      const result = await grupoCreate(data);
+      const result =
+        props.operation === "CreateNew" ? await grupoCreate(data) : await grupoUpdate(data as any);
       await showAlert({
         kind: "info",
         title: `${props.operation === "CreateNew" ? "Inserido" : "Atualizado"} com sucesso`,
