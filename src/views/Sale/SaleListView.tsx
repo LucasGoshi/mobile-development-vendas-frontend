@@ -46,6 +46,7 @@ export default function SaleListView() {
         <h1 class="font-bold">Lista de vendas</h1>
       </header>
       <div class="flex justify-end gap-1">
+        <IconButton iconName="Graph">Métricas</IconButton>
         <IconButton
           iconName="Add"
           onClick={() =>
@@ -66,9 +67,7 @@ export default function SaleListView() {
               tabIndex={0}>
               <span class="font-mono text-sm">Venda #{venda.id}</span>
               <h2 class="font-bold">{produto.nome}</h2>
-              <span class="font-mono text-sm">
-                Quantidade: {venda.quantidade}
-              </span>
+              <span class="font-mono text-sm">Quantidade: {venda.quantidade}</span>
               <span class="font-mono text-sm">
                 Data: {new Date(venda.dateTime).toLocaleString()}
               </span>

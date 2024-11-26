@@ -25,6 +25,7 @@ import IconSizeGAdd from "./SizeGAdd.png";
 import IconSizeGGAdd from "./SizeGGAdd.png";
 import IconDelete from "./Delete.png";
 import IconEdit from "./Edit.png";
+import IconGraph from "./Graph.png";
 
 const Icons = {
   FileTypeUnknown: IconFileTypeUnknown,
@@ -51,6 +52,7 @@ const Icons = {
   SizeGGAdd: IconSizeGGAdd,
   Delete: IconDelete,
   Edit: IconEdit,
+  Graph: IconGraph,
 } as const;
 
 export type IconName = keyof typeof Icons;

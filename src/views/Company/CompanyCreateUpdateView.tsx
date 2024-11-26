@@ -76,7 +76,7 @@ export default function CompanyCreateUpdateView(props: CompanyCreateUpdateViewPr
           ? await fabricanteCreate({
               nomeFantasia: formState.nomeFantasia,
               razaoSocial: formState.razaoSocial,
-              cnpj: formState.cnpj.replace(/[^0-9]/g, ""),
+              cnpj: formState.cnpj, //.replace(/[^0-9]/g, ""),
               endereco: formState.endereco,
               telefone: formState.telefone,
               email: formState.email,
@@ -86,7 +86,7 @@ export default function CompanyCreateUpdateView(props: CompanyCreateUpdateViewPr
               id: formState.id!,
               nomeFantasia: formState.nomeFantasia,
               razaoSocial: formState.razaoSocial,
-              cnpj: formState.cnpj.replace(/[^\d]/g, ""),
+              cnpj: formState.cnpj, //.replace(/[^\d]/g, ""),
               endereco: formState.endereco,
               telefone: formState.telefone,
               email: formState.email,
