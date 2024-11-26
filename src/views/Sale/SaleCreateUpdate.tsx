@@ -30,9 +30,7 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
         quantity: z
           .number({ invalid_type_error: "A quantidade precisa ser um número válido" })
           .min(1, "A quantidade deve ser pelo menos 1"),
-        productId: z
-          .number()
-          .refine(() => true /* todo check if valid product id */, "Produto inválido"),
+        productId: z.number().refine(() => true, "Produto inválido"),
         dateTime: z.string().nonempty("A data e hora são obrigatórias"),
       }),
     []
@@ -49,15 +47,25 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
   async function handleFormSubmit(e: Event) {
     e.preventDefault();
     if (!validationError) {
-      // TODO: Enviar os dados para o backend
-      console.log("Dados validados:", formState);
+      try {
+        // Simular envio ao backend (substitua com a chamada real)
+        console.log("Dados enviados:", formState);
+        alert(`Venda ${props.operation === "CreateNew" ? "cadastrada" : "atualizada"} com sucesso!`);
+        props.notifyMutated();
+        compass.pop(); // Voltar à lista de vendas
+      } catch (err) {
+        console.error("Erro ao enviar venda:", err);
+      }
     }
   }
 
+<<<<<<< HEAD
+=======
   useEffect(() => {
     return () => props.notifyMutated();
   }, []);
 
+>>>>>>> 93ed67034dc658bfbe987b89a5471cd87f8d5eb3
   const [allProducts, setAllProducts] = useState<Produto[]>([]);
   useEffect(() => {
     produtoGetAll().then((produtos) => setAllProducts(produtos));
@@ -81,7 +89,7 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
           <ComboBox value={productId.toString()} onChange={(id) => setProductId(parseInt(id) || 0)}>
             {allProducts.map((product) => (
               <ComboBoxOption kind="option" value={product.id.toString()}>
-                {product.nome} - {product.fabricante.nomeFantasia || product.fabricante.razaoSocial}
+                {product.nome}
               </ComboBoxOption>
             ))}
           </ComboBox>
@@ -96,9 +104,7 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
           />
         </label>
         {validationError && (
-          <div>
-            <p class="text-error-on-light">{validationError.errors[0].message}</p>
-          </div>
+          <p class="text-error-on-light">{validationError.errors[0].message}</p>
         )}
         <footer class="flex justify-end">
           <Button disabled={!!validationError} onClick={handleFormSubmit}>

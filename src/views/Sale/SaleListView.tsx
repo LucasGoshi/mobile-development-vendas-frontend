@@ -5,7 +5,7 @@ import useAlertDialog from "../../components/AlertDialog";
 import Button, { IconButton } from "../../components/Button";
 import { useCompass } from "../../components/CompassNavigator";
 import Icon from "../../components/Icon";
-import VendaCreateUpdateView from "./SaleCreateUpdate";
+import SaleCreateUpdateView from "./SaleCreateUpdate";
 
 export default function SaleListView() {
   const compass = useCompass();
@@ -50,7 +50,7 @@ export default function SaleListView() {
         <IconButton
           iconName="Add"
           onClick={() =>
-            compass.push(VendaCreateUpdateView, {
+            compass.push(SaleCreateUpdateView, {
               operation: "CreateNew",
               notifyMutated: () => refreshData(),
             })
@@ -79,7 +79,7 @@ export default function SaleListView() {
                 <Button
                   class="flex-1 grow"
                   onClick={() =>
-                    compass.push(VendaCreateUpdateView, {
+                    compass.push(SaleCreateUpdateView, {
                       operation: "Update",
                       seed: venda,
                       notifyMutated: () => refreshData(),
