@@ -5,7 +5,7 @@ import useAlertDialog from "../../components/AlertDialog";
 import Button, { IconButton } from "../../components/Button";
 import { useCompass } from "../../components/CompassNavigator";
 import Icon from "../../components/Icon";
-import VendaCreateUpdateView from "./SaleCreateUpdate";
+import SaleCreateUpdateView from "./SaleCreateUpdate";
 
 export default function SaleListView() {
   const compass = useCompass();
@@ -45,17 +45,16 @@ export default function SaleListView() {
         <IconButton iconName="ArrowLeft" onClick={compass.pop} />
         <h1 class="font-bold">Lista de vendas</h1>
       </header>
-      <div class="flex justify-end gap-1">
-        <IconButton
-          iconName="Add"
-          onClick={() =>
-            compass.push(VendaCreateUpdateView, {
-              operation: "CreateNew",
-              notifyMutated: () => refreshData(),
-            })
-          }
-        />
-      </div>
+      <IconButton
+  iconName="Add"
+  onClick={() =>
+    compass.push(SaleCreateUpdateView, {
+      operation: "CreateNew",
+      notifyMutated: () => refreshData(),
+    })
+  }
+/>
+
       <ul class="flex grow flex-col gap-2">
         {allVendas.map((venda) => {
           const produto = venda.produto;
@@ -80,7 +79,7 @@ export default function SaleListView() {
                 <Button
                   class="flex-1 grow"
                   onClick={() =>
-                    compass.push(VendaCreateUpdateView, {
+                    compass.push(SaleCreateUpdateView, {
                       operation: "Update",
                       seed: venda,
                       notifyMutated: () => refreshData(),
