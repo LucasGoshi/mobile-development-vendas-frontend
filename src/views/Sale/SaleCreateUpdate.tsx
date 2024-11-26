@@ -50,7 +50,9 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
       try {
         // Simular envio ao backend (substitua com a chamada real)
         console.log("Dados enviados:", formState);
-        alert(`Venda ${props.operation === "CreateNew" ? "cadastrada" : "atualizada"} com sucesso!`);
+        alert(
+          `Venda ${props.operation === "CreateNew" ? "cadastrada" : "atualizada"} com sucesso!`
+        );
         props.notifyMutated();
         compass.pop(); // Voltar à lista de vendas
       } catch (err) {
@@ -59,13 +61,10 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
     }
   }
 
-<<<<<<< HEAD
-=======
   useEffect(() => {
     return () => props.notifyMutated();
   }, []);
 
->>>>>>> 93ed67034dc658bfbe987b89a5471cd87f8d5eb3
   const [allProducts, setAllProducts] = useState<Produto[]>([]);
   useEffect(() => {
     produtoGetAll().then((produtos) => setAllProducts(produtos));
@@ -103,9 +102,7 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
             class="border-gray-400 rounded border p-1"
           />
         </label>
-        {validationError && (
-          <p class="text-error-on-light">{validationError.errors[0].message}</p>
-        )}
+        {validationError && <p class="text-error-on-light">{validationError.errors[0].message}</p>}
         <footer class="flex justify-end">
           <Button disabled={!!validationError} onClick={handleFormSubmit}>
             <Icon name={props.operation === "CreateNew" ? "Add" : "Build"} />
