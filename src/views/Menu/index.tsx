@@ -38,7 +38,18 @@ export default function Menu() {
           await showAlert({
             kind: "info",
             title: "Sobre o Aplicativo",
-            content: <p>Sobre o Aplicativo</p>,
+            content: (
+              <>
+                <p>Autores:</p>
+                <ul class="list-disc pl-4">
+                  <li>Lucas Bortoli</li>
+                  <li>Lucas Goshi</li>
+                  <li>Arthur Monteiro</li>
+                  <li>Renato Takanashi</li>
+                  <li>Nicolas Lopes</li>
+                </ul>
+              </>
+            ),
             buttons: {
               ok: "OK",
             },
