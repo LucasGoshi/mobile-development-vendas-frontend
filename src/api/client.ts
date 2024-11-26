@@ -1,4 +1,13 @@
-import type { Fabricante, Grupo, Produto, ProdutoCreate, ProdutoUpdate, Venda } from "./entities";
+import type {
+  Fabricante,
+  Grupo,
+  Produto,
+  ProdutoCreate,
+  ProdutoUpdate,
+  Venda,
+  VendaCreate,
+  VendaUpdate,
+} from "./entities";
 
 const API_BASE = "http://senai:8080";
 
@@ -53,8 +62,8 @@ export const fabricanteDelete = (id: number) => httpDelete(`/api/fabricante/remo
 
 export const vendaGetAll = () => get<Venda[]>("/api/venda");
 export const vendaGetOne = (id: number) => get<Venda>(`/api/venda/${id}`);
-export const vendaCreate = (venda: Omit<Venda, "id">) => post("/api/venda/novo", venda);
-export const vendaUpdate = (venda: Venda) => put(`/api/venda/atualizar/${venda.id}`, venda);
+export const vendaCreate = (venda: VendaCreate) => post("/api/venda/novo", venda);
+export const vendaUpdate = (venda: VendaUpdate) => put(`/api/venda/atualizar/${venda.id}`, venda);
 export const vendaDelete = (id: number) => httpDelete(`/api/venda/remover/${id}`);
 
 export const grupoGetAll = () => get<Grupo[]>("/api/grupo");

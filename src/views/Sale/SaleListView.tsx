@@ -56,6 +56,7 @@ export default function SaleListView() {
             })
           }
         />
+        <IconButton iconName="Refresh" onClick={refreshData} />
       </div>
       <ul class="flex grow flex-col gap-2">
         {allVendas.map((venda) => {

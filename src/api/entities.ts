@@ -37,5 +37,11 @@ export interface Venda {
   id: number;
   quantidade: number;
   produto: Produto;
-  dateTime: number;
+  dateTime: string;
 }
+
+export type VendaUpdate = Omit<Venda, "produto"> & {
+  produto: { id: number };
+};
+
+export type VendaCreate = Omit<VendaUpdate, "id">;

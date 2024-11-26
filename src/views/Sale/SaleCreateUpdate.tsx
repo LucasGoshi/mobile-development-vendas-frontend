@@ -7,7 +7,8 @@ import Icon from "../../components/Icon";
 import TextField from "../../components/TextField";
 import { z } from "zod";
 import { Produto, Venda } from "../../api/entities";
-import { produtoGetAll } from "../../api/client";
+import { produtoGetAll, vendaCreate, vendaUpdate } from "../../api/client";
+import useAlertDialog from "../../components/AlertDialog";
 
 interface SaleCreateUpdateViewProps {
   seed?: Venda;
@@ -17,6 +18,7 @@ interface SaleCreateUpdateViewProps {
 
 export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
   const compass = useCompass();
+  const showAlert = useAlertDialog();
 
   const [quantity, setQuantity] = useState(props.seed?.quantidade ?? 1);
   const [productId, setProductId] = useState(props.seed?.produto.id ?? 0);
@@ -46,18 +48,42 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
 
   async function handleFormSubmit(e: Event) {
     e.preventDefault();
-    if (!validationError) {
-      try {
-        // Simular envio ao backend (substitua com a chamada real)
-        console.log("Dados enviados:", formState);
-        alert(
-          `Venda ${props.operation === "CreateNew" ? "cadastrada" : "atualizada"} com sucesso!`
-        );
-        props.notifyMutated();
-        compass.pop(); // Voltar à lista de vendas
-      } catch (err) {
-        console.error("Erro ao enviar venda:", err);
-      }
+    if (validationError) return;
+
+    try {
+      const result =
+        props.operation === "CreateNew"
+          ? await vendaCreate({
+              produto: { id: formState.productId },
+              quantidade: formState.quantity,
+              dateTime: new Date(formState.dateTime).toISOString(),
+            })
+          : await vendaUpdate({
+              id: props.seed!.id,
+              produto: { id: formState.productId },
+              quantidade: formState.quantity,
+              dateTime: new Date(formState.dateTime).toISOString(),
+            });
+      await showAlert({
+        kind: "info",
+        title: `${props.operation === "CreateNew" ? "Inserido" : "Atualizado"} com sucesso`,
+        content: <p>A operação foi concluída.</p>,
+        buttons: {
+          ok: "OK",
+        },
+      });
+      props.notifyMutated();
+      compass.pop();
+    } catch (error) {
+      console.error(error);
+      await showAlert({
+        kind: "warn",
+        title: `Erro ao ${props.operation === "CreateNew" ? "inserir" : "atualizar"}`,
+        content: <p>Houve um erro ao atualizar.</p>,
+        buttons: {
+          ok: "OK",
+        },
+      });
     }
   }
 
