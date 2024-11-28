@@ -162,7 +162,9 @@ export default function CompanyCreateUpdateView(props: CompanyCreateUpdateViewPr
           </div>
         )}
         <footer class="flex justify-end">
-          <Button disabled={!!validationError} onClick={handleFormSubmit}>
+          <Button   
+            class={validationError ? "disabled" : ""}
+            onClick={validationError ? undefined : handleFormSubmit}>
             <Icon name={props.operation === "CreateNew" ? "Add" : "Build"} />
             {props.operation === "CreateNew" ? "Cadastrar" : "Atualizar"}
           </Button>

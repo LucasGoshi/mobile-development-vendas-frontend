@@ -4,17 +4,18 @@ import { useCompass } from "../../components/CompassNavigator";
 import Icon from "../../components/Icon";
 import CompanyListView from "../Company/CompanyListView";
 import GroupListView from "../Group/GroupListView";
-//import LoginView from "../Login";
 import ProductListView from "../Product/ProductListView";
 import SaleListView from "../Sale/SaleListView";
 
-export default function Menu() {
+export default function Menu({ onLogout }: { onLogout: () => void }) {
   const compass = useCompass();
   const showAlert = useAlertDialog();
 
   return (
     <section class="flex h-full w-full flex-col gap-1 p-4">
-      <h1 class="text-2xl font-light">Vendoísta</h1>
+      <header>
+        <h1 class="text-2xl font-light">Vendoísta</h1>
+      </header>
       <nav class="grid aspect-square w-full grid-cols-2 gap-1">
         <Button class="h-full flex-col gap-0" onClick={() => compass.push(GroupListView, {})}>
           <Icon name="FileTypeDirectory" />
@@ -56,6 +57,10 @@ export default function Menu() {
           });
         }}>
         Sobre o Aplicativo
+      </Button>
+      <Button class="mt-4" onClick={onLogout}>
+        <Icon name="ArrowLeft" />
+        Sair
       </Button>
     </section>
   );

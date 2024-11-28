@@ -9,7 +9,7 @@ import type {
   VendaUpdate,
 } from "./entities";
 
-const API_BASE = "http://senai:8080";
+const API_BASE = "http://localhost:8080/comercial";
 
 const get = async <T>(route: string): Promise<T> => {
   const response = await fetch(`${API_BASE}${route}`);

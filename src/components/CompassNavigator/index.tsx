@@ -20,6 +20,7 @@ interface Route<P> {
 }
 
 interface CompassContext {
+  replace(arg0: string): unknown;
   routeStack: Route<any>[];
   push<P>(
     component: (props: P) => JSX.Element,
@@ -66,6 +67,9 @@ export function CompassProvider(props: { children: ComponentChildren }) {
       console.log("Route pop");
       setRouteState(targetRoute.key, "leaving");
     },
+    replace: function (arg0: string): unknown {
+      throw new Error("Function not implemented.");
+    }
   };
 
   function handleAnimationEndOnRoute(

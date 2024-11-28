@@ -12,7 +12,7 @@ export interface ButtonProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 export default function Button(props: ButtonProps) {
   return (
     <button
-      {...props}
+      {...props} 
       class={cn(
         "border-grey-800 bg-grey-100 text-grey-800 enabled:active:bg-grey-400 disabled:bg-grey-300 disabled:text-grey-500 inline-flex h-8 select-none items-center justify-center gap-4 border px-4 font-sans shadow-pixel enabled:hover:shadow-pixel-sm enabled:active:translate-x-px enabled:active:translate-y-px enabled:active:shadow-none",
         props.class
@@ -21,6 +21,13 @@ export default function Button(props: ButtonProps) {
       {props.children}
     </button>
   );
+}
+
+export interface ButtonProps extends JSX.HTMLAttributes<HTMLButtonElement> {
+  type?: "button" | "submit" | "reset"; 
+  children?: ComponentChildren;
+  class?: string;
+  buttonRef?: Ref<HTMLButtonElement>;
 }
 
 export interface IconButtonProps extends ButtonProps {
