@@ -71,7 +71,6 @@ export default function CompanyCreateUpdateView(props: CompanyCreateUpdateViewPr
     e.preventDefault();
 
     try {
-      const result =
         props.operation === "CreateNew"
           ? await fabricanteCreate({
               nomeFantasia: formState.nomeFantasia,

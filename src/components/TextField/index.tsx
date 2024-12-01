@@ -1,7 +1,6 @@
 import type { JSX, Ref } from "preact";
 import { cn } from "../../utils/cn";
 import style from "./style.module.css";
-import { getIconUrl } from "../Icon";
 
 interface BaseFieldProps {
   placeholder?: string;
@@ -21,7 +20,7 @@ interface TextFieldProps extends BaseFieldProps {
 
 interface NumericFieldProps extends BaseFieldProps {
   kind: "number";
-  min?: number;
+  min?: number; 
   max?: number;
   step?: number;
   value: number;
@@ -31,12 +30,13 @@ interface NumericFieldProps extends BaseFieldProps {
 export type FieldProps = TextFieldProps | NumericFieldProps;
 
 export default function TextField(props: FieldProps) {
-  let inputProps: JSX.HTMLAttributes<HTMLInputElement> = {};
+  // Inicialize como um objeto vazio com os tipos apropriados
+  let inputProps: Partial<JSX.IntrinsicElements["input"]> = {};
 
   switch (props.kind) {
     case "text":
       inputProps = {
-        type: props.usesPasswordMask ? "password" : "text",
+        type: props.usesPasswordMask ? "password" : "text", 
         value: props.value,
         onInput: (e) => props.onInput(e.currentTarget.value),
         style: { ...props.style },
@@ -44,10 +44,9 @@ export default function TextField(props: FieldProps) {
       break;
     case "number":
       inputProps = {
-        ...inputProps,
-        type: "number",
-        min: props.min,
-        max: props.max,
+        type: "number", 
+        min: props.min?.toString(), 
+        max: props.max?.toString(),
         step: props.step ?? 1,
         value: props.value,
         onInput: (e) => props.onInput(e.currentTarget.valueAsNumber),
@@ -66,7 +65,6 @@ export default function TextField(props: FieldProps) {
         props.class,
         props.kind === "number" && style.numberInput
       )}
-      style={{ "--icon-url": `url('${getIconUrl("SpinnerArrow")}')` }}
       readOnly={props.readOnly}
       ref={props.inputRef}
     />

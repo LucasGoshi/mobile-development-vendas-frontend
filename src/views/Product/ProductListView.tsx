@@ -6,7 +6,6 @@ import Button, { IconButton } from "../../components/Button";
 import { useCompass } from "../../components/CompassNavigator";
 import Icon from "../../components/Icon";
 import ProductCreateUpdateView from "./ProductCreateUpdate";
-import TestOverlayView from "./TestOverlayView";
 
 export default function ProductListView() {
   const compass = useCompass();

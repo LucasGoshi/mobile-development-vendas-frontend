@@ -6,6 +6,7 @@ import doSwitch from "../../utils/switch_expression";
 export interface ButtonProps extends JSX.HTMLAttributes<HTMLButtonElement> {
   children?: ComponentChildren;
   class?: string;
+  disabled?: boolean;
   buttonRef?: Ref<HTMLButtonElement>;
 }
 

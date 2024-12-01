@@ -59,7 +59,6 @@ export default function GroupCreateUpdateView(props: GroupCreateUpdateViewProps)
     if (!data) return;
 
     try {
-      const result =
         props.operation === "CreateNew" ? await grupoCreate(data) : await grupoUpdate(data as any);
       await showAlert({
         kind: "info",

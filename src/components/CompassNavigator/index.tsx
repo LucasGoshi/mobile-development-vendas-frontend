@@ -67,7 +67,7 @@ export function CompassProvider(props: { children: ComponentChildren }) {
       console.log("Route pop");
       setRouteState(targetRoute.key, "leaving");
     },
-    replace: function (arg0: string): unknown {
+    replace: function (): unknown {
       throw new Error("Function not implemented.");
     }
   };

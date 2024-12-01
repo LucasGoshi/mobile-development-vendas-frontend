@@ -51,7 +51,6 @@ export default function SaleCreateUpdateView(props: SaleCreateUpdateViewProps) {
     if (validationError) return;
 
     try {
-      const result =
         props.operation === "CreateNew"
           ? await vendaCreate({
               produto: { id: formState.productId },

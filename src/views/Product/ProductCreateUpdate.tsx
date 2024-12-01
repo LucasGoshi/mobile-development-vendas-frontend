@@ -64,7 +64,6 @@ export default function ProductCreateUpdateView(props: ProductCreateUpdateViewPr
     if (!data) return;
 
     try {
-      const result =
         props.operation === "CreateNew"
           ? await produtoCreate({
               nome: formState.nome,

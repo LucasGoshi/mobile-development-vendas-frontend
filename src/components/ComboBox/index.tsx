@@ -16,8 +16,7 @@ export default function ComboBox(props: ComboBoxProps) {
 
   return (
     <select
-      type="text"
-      disabled={props.disabled ?? false}
+      disabled={props.disabled ?? false} 
       class={cn(
         "border-grey-800 bg-grey-0 text-grey-800 placeholder:text-grey-400 disabled:bg-grey-100 disabled:text-grey-600 inline-flex h-8 select-none appearance-none items-center gap-2 border px-2 pr-8 font-sans shadow-pixel hover:shadow-pixel-sm disabled:shadow-none",
         style.combobox,
